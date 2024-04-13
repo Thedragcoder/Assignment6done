@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 // Require necessary modules
 const express = require("express");
 const clientSessions = require("client-sessions");
@@ -122,6 +123,26 @@ unCountryData.initialize()
   })
   .catch((err) => {
     console.log(`Unable to start server: ${err}`);
+  });
+
+
+// set up sequelize to point to our postgres database
+const sequelize = new Sequelize('SenecaDB', 'SenecaDB_owner', '9sfOYxIMUCt4', {
+  host: 'ep-gentle-smoke-a57s463j-pooler.us-east-2.aws.neon.tech',
+  dialect: 'postgres',
+  port: 5432,
+  dialectOptions: {
+    ssl: { rejectUnauthorized: false },
+  },
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.log('Unable to connect to the database:', err);
   });
 
 // 404 middleware
